@@ -1,4 +1,11 @@
-const formatValue = (value: number): string =>
-  Intl.NumberFormat().format(value); // TODO
+export const formatValue = (value: number): string =>
+  Intl.NumberFormat('pr-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value);
 
-export default formatValue;
+export const formatDate = (date: string): string => {
+  const dateText = new Date(date).toLocaleDateString();
+
+  return dateText.length < 10 ? `0${dateText}` : dateText;
+};
