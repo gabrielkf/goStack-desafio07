@@ -7,7 +7,12 @@ import Header from '../../components/Header';
 import FileList from '../../components/FileList';
 import Upload from '../../components/Upload';
 
-import { Container, Title, ImportFileContainer, Footer } from './styles';
+import {
+  Container,
+  Title,
+  ImportFileContainer,
+  Footer,
+} from './styles';
 
 import alert from '../../assets/alert.svg';
 import api from '../../services/api';
@@ -23,19 +28,38 @@ const Import: React.FC = () => {
   const history = useHistory();
 
   async function handleUpload(): Promise<void> {
-    // const data = new FormData();
+    const data = new FormData();
 
-    // TODO
+    const response = uploadedFiles.map(async file => {
+      data.append('image', file.name);
 
-    try {
-      // await api.post('/transactions/import', data);
-    } catch (err) {
-      // console.log(err.response.error);
-    }
+      try {
+        return await api.post('/transactions/import', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (err) {
+        console.log(err.response.error);
+        return 0;
+      }
+    });
+
+    console.log(response);
+    // history.push('/');
   }
 
   function submitFile(files: File[]): void {
-    // TODO
+    const fileProps = files.map(file => {
+      console.log(file);
+      return {
+        file,
+        name: file.name,
+        readableSize: filesize(file.size),
+      };
+    });
+
+    setUploadedFiles([...uploadedFiles, ...fileProps]);
   }
 
   return (
@@ -45,7 +69,9 @@ const Import: React.FC = () => {
         <Title>Importar uma transação</Title>
         <ImportFileContainer>
           <Upload onUpload={submitFile} />
-          {!!uploadedFiles.length && <FileList files={uploadedFiles} />}
+          {!!uploadedFiles.length && (
+            <FileList files={uploadedFiles} />
+          )}
 
           <Footer>
             <p>
@@ -53,7 +79,7 @@ const Import: React.FC = () => {
               Permitido apenas arquivos CSV
             </p>
             <button onClick={handleUpload} type="button">
-              Enviar
+              Send
             </button>
           </Footer>
         </ImportFileContainer>

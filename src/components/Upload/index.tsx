@@ -10,25 +10,44 @@ interface UploadProps {
 const Upload: React.FC<UploadProps> = ({ onUpload }: UploadProps) => {
   function renderDragMessage(
     isDragActive: boolean,
-    isDragRejest: boolean,
+    isDragReject: boolean,
   ): ReactNode {
     if (!isDragActive) {
       return (
-        <UploadMessage>Selecione ou arraste o arquivo aqui.</UploadMessage>
+        <UploadMessage>
+          Selecione ou arraste o arquivo aqui.
+        </UploadMessage>
       );
     }
 
-    if (isDragRejest) {
-      return <UploadMessage type="error">Arquivo não suportado</UploadMessage>;
+    if (isDragReject) {
+      return (
+        <UploadMessage type="error">
+          Arquivo não suportado
+        </UploadMessage>
+      );
     }
 
-    return <UploadMessage type="success">Solte o arquivo aqui</UploadMessage>;
+    return (
+      <UploadMessage type="success">
+        Solte o arquivo aqui
+      </UploadMessage>
+    );
   }
 
   return (
     <>
-      <Dropzone accept=".csv, application/vnd.ms-excel, text/csv," onDropAccepted={(files) => onUpload(files)}>
-        {({ getRootProps, getInputProps, isDragActive, isDragReject }): any => (
+      <Dropzone
+        accept=".csv, application/vnd.ms-excel, text/csv,"
+        onDrop={acceptedFiles => onUpload(acceptedFiles)}
+        // onDropAccepted={files => onUpload(files)}
+      >
+        {({
+          getRootProps,
+          getInputProps,
+          isDragActive,
+          isDragReject,
+        }): any => (
           <DropContainer
             {...getRootProps()}
             isDragActive={isDragActive}
