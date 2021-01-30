@@ -30,7 +30,7 @@ import App from '../App';
 const apiMock = new MockAdapter(api);
 
 const wait = (amount = 0): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, amount));
+  return new Promise(resolve => setTimeout(resolve, amount));
 };
 
 const actWait = async (amount = 0): Promise<void> => {
@@ -100,11 +100,17 @@ describe('Dashboard', () => {
 
     await actWait();
 
-    expect(getByTestId('balance-income')).toHaveTextContent('R$ 6.000,00');
+    expect(getByTestId('balance-income')).toHaveTextContent(
+      'R$ 6.000,00',
+    );
 
-    expect(getByTestId('balance-outcome')).toHaveTextContent('R$ 50,00');
+    expect(getByTestId('balance-outcome')).toHaveTextContent(
+      'R$ 50,00',
+    );
 
-    expect(getByTestId('balance-total')).toHaveTextContent('R$ 5.950,00');
+    expect(getByTestId('balance-total')).toHaveTextContent(
+      'R$ 5.950,00',
+    );
   });
 
   it('should be able to list the transactions', async () => {

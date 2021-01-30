@@ -8,7 +8,7 @@ import api from '../../services/api';
 
 import Header from '../../components/Header';
 
-import { formatValue, formatDate } from '../../utils/formatValue';
+import formatValue from '../../utils/formatValue';
 
 import {
   Container,
@@ -24,7 +24,7 @@ interface Transaction {
   formattedValue: string;
   formattedDate: string;
   type: 'income' | 'outcome';
-  category_id: { title: string };
+  category: { title: string };
   created_at: string;
 }
 
@@ -48,6 +48,12 @@ const Dashboard: React.FC = () => {
 
     loadTransactions();
   }, []);
+
+  function formatDate(date: string): string {
+    const dateText = new Date(date).toLocaleDateString();
+
+    return dateText.length < 10 ? `0${dateText}` : dateText;
+  }
 
   return (
     <>
@@ -103,7 +109,7 @@ const Dashboard: React.FC = () => {
                       ? `- ${formatValue(trans.value)}`
                       : `${formatValue(trans.value)}`}
                   </td>
-                  <td>{trans.category_id.title}</td>
+                  <td>{trans.category.title}</td>
                   <td>{formatDate(trans.created_at)}</td>
                 </tr>
               ))}
